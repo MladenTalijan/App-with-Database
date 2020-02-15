@@ -2,13 +2,55 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Home extends javax.swing.JFrame {
     String gender;
     public Home() {
         initComponents();
+        show_user();
     }
+public ArrayList<User> userList(){
+    ArrayList<User> usersList = new ArrayList<>();
+    
+   try{
+       Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+       String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
+       Connection con = DriverManager.getConnection(url);
+       
+       String query1 = "SELECT * FROM users";
+       Statement st = con.createStatement();
+       ResultSet rs = st.executeQuery(query1);
+       User user;
+       while(rs.next()){
+           user = new User(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("gender"), rs.getString("membership"), rs.getString("genre"));
+           usersList.add(user);
+       }
+       
+   }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+   }
+   return usersList;
+}
+
+public void show_user(){
+    ArrayList<User> list = userList();
+    DefaultTableModel model = (DefaultTableModel)jTable_Display_User.getModel();
+    Object[] row = new Object[6];
+    for(int i=0; i < list.size() ; i++){
+        row[0] = list.get(i).getId();
+        row[1] = list.get(i).getName();
+        row[2] = list.get(i).getAddress();
+        row[3] = list.get(i).getGender();
+        row[4] = list.get(i).getMembership();
+        row[5] = list.get(i).getGenre();
+        model.addRow(row);
+    }
+}
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -30,6 +72,8 @@ public class Home extends javax.swing.JFrame {
         genre = new javax.swing.JComboBox();
         saveBtn = new javax.swing.JButton();
         resetBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable_Display_User = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,6 +113,16 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jTable_Display_User.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "Name", "Address", "Gender", "Membership", "Genre"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable_Display_User);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -101,7 +155,8 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(saveBtn)
                         .addGap(88, 88, 88)
                         .addComponent(resetBtn)))
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,11 +185,14 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
                     .addComponent(resetBtn))
                 .addGap(29, 29, 29))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 14, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -157,7 +215,7 @@ public class Home extends javax.swing.JFrame {
            String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
            Connection con = DriverManager.getConnection(url);
            
-           String query = "insert into users(name, address, gender, membership, genre)values(?, ?, ?, ?)";
+           String query = "insert into users(name, address, gender, membership, genre)values(?, ?, ?, ?, ?)";
            PreparedStatement pst = con.prepareStatement(query);
            pst.setString(1, name.getText());
            pst.setString(2, address.getText());
@@ -221,6 +279,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable_Display_User;
     private javax.swing.JRadioButton male;
     private javax.swing.JTextField name;
     private javax.swing.JCheckBox readingRoom;
