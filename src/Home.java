@@ -249,6 +249,10 @@ public void show_user(){
            pst.executeUpdate();
            JOptionPane.showMessageDialog(null, "Data inserted successfuly!");
            
+           DefaultTableModel model = (DefaultTableModel) jTable_Display_User.getModel();
+           model.setRowCount(0);
+           show_user();
+           
            }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
