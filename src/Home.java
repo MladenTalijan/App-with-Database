@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 public class Home extends javax.swing.JFrame {
     String gender;
@@ -121,6 +122,11 @@ public void show_user(){
                 "Id", "Name", "Address", "Gender", "Membership", "Genre"
             }
         ));
+        jTable_Display_User.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_Display_UserMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable_Display_User);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -257,6 +263,59 @@ public void show_user(){
         genre.setSelectedIndex(0);
         
     }//GEN-LAST:event_resetBtnActionPerformed
+
+    private void jTable_Display_UserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_Display_UserMouseClicked
+        int i = jTable_Display_User.getSelectedRow();
+        TableModel model = jTable_Display_User.getModel();
+        
+        name.setText(model.getValueAt(i, 1).toString());
+        address.setText(model.getValueAt(i, 2).toString());
+        String sex = model.getValueAt(i, 3).toString();
+            if(sex.equals(male)){
+                male.setSelected(true);
+            }else{
+                female.setSelected(true);
+            }
+        String membership = model.getValueAt(i, 4).toString();
+            switch(membership){
+                case "Books ":
+                    books.setSelected(true);
+                    readingRoom.setSelected(false);
+                    break;
+                case "Reading Room ":
+                    readingRoom.setSelected(true);
+                    books.setSelected(false);
+                    break;
+                default:
+                    books.setSelected(true);
+                    readingRoom.setSelected(true);
+                    break;
+            }
+        String genre1 = model.getValueAt(i, 5).toString();
+            switch(genre1){
+                case "Klasici":
+                    genre.setSelectedIndex(0);
+                    break;
+                case "Akcioni":
+                    genre.setSelectedIndex(1);
+                    break;
+                case "Drame":
+                    genre.setSelectedIndex(2);
+                    break;
+                case "Horor":
+                    genre.setSelectedIndex(3);
+                    break;
+                case "Biografija":
+                    genre.setSelectedIndex(4);
+                    break;
+                case "Ljubavni":
+                    genre.setSelectedIndex(5);
+                    break;
+                case "Ostali":
+                    genre.setSelectedIndex(6);
+                    break;
+            }
+    }//GEN-LAST:event_jTable_Display_UserMouseClicked
 
     public static void main(String args[]) {
        
