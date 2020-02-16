@@ -76,6 +76,7 @@ public void show_user(){
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Display_User = new javax.swing.JTable();
         update = new javax.swing.JButton();
+        delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,6 +138,13 @@ public void show_user(){
             }
         });
 
+        delete.setText("Delete");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -169,10 +177,12 @@ public void show_user(){
                         .addComponent(saveBtn)
                         .addGap(18, 18, 18)
                         .addComponent(update)
-                        .addGap(53, 53, 53)
+                        .addGap(18, 18, 18)
+                        .addComponent(delete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(resetBtn)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
+                .addGap(11, 11, 11)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -205,7 +215,8 @@ public void show_user(){
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
                     .addComponent(resetBtn)
-                    .addComponent(update))
+                    .addComponent(update)
+                    .addComponent(delete))
                 .addGap(29, 29, 29))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 14, Short.MAX_VALUE)
@@ -380,6 +391,29 @@ public void show_user(){
          }
     }//GEN-LAST:event_updateActionPerformed
 
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        try{
+           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
+           Connection con = DriverManager.getConnection(url);
+           
+           int row = jTable_Display_User.getSelectedRow();
+           String value = (jTable_Display_User.getModel().getValueAt(row, 0).toString());
+           
+           String query = "DELETE FROM users where id = " + value;
+           PreparedStatement pst = con.prepareStatement(query);
+           pst.executeUpdate();
+           
+           DefaultTableModel model = (DefaultTableModel) jTable_Display_User.getModel();
+           model.setRowCount(0);
+           show_user();
+           JOptionPane.showMessageDialog(null, "Deleted successfuly");
+           
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+         }       
+    }//GEN-LAST:event_deleteActionPerformed
+
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -393,6 +427,7 @@ public void show_user(){
     private javax.swing.JTextField address;
     private javax.swing.JCheckBox books;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton delete;
     private javax.swing.JRadioButton female;
     private javax.swing.JComboBox genre;
     private javax.swing.JLabel jLabel1;
