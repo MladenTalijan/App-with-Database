@@ -75,6 +75,7 @@ public void show_user(){
         resetBtn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable_Display_User = new javax.swing.JTable();
+        update = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,6 +130,13 @@ public void show_user(){
         });
         jScrollPane1.setViewportView(jTable_Display_User);
 
+        update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -157,9 +165,11 @@ public void show_user(){
                             .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(address)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
+                        .addContainerGap()
                         .addComponent(saveBtn)
-                        .addGap(88, 88, 88)
+                        .addGap(18, 18, 18)
+                        .addComponent(update)
+                        .addGap(53, 53, 53)
                         .addComponent(resetBtn)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE))
@@ -194,7 +204,8 @@ public void show_user(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
-                    .addComponent(resetBtn))
+                    .addComponent(resetBtn)
+                    .addComponent(update))
                 .addGap(29, 29, 29))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 14, Short.MAX_VALUE)
@@ -223,6 +234,7 @@ public void show_user(){
            
            String query = "insert into users(name, address, gender, membership, genre)values(?, ?, ?, ?, ?)";
            PreparedStatement pst = con.prepareStatement(query);
+           
            pst.setString(1, name.getText());
            pst.setString(2, address.getText());
            if(male.isSelected()){
@@ -321,6 +333,53 @@ public void show_user(){
             }
     }//GEN-LAST:event_jTable_Display_UserMouseClicked
 
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+         try{
+           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
+           Connection con = DriverManager.getConnection(url);
+           
+           int row = jTable_Display_User.getSelectedRow();
+           String value = (jTable_Display_User.getModel().getValueAt(row, 0).toString());
+           String query = "UPDATE users SET name = ?, address = ?, gender = ?, membership = ?, genre = ? where id=" + value;
+           
+           PreparedStatement pst = con.prepareStatement(query);
+           
+           pst.setString(1, name.getText());
+           pst.setString(2, address.getText());
+           if(male.isSelected()){
+               gender = "Male";
+           }
+           if(female.isSelected()){
+               gender = "Female";
+           }
+           pst.setString(3, gender);
+           
+           String membership = "";
+           if(books.isSelected()){
+               membership += books.getText()+ " ";
+           }
+           if(readingRoom.isSelected()){
+               membership += readingRoom.getText()+ " ";
+           }
+           pst.setString(4, membership);
+           
+           String pick;
+           pick = genre.getSelectedItem().toString();
+           pst.setString(5, pick);
+           
+           pst.executeUpdate();
+           JOptionPane.showMessageDialog(null, "Data updated successfuly!");
+           
+           DefaultTableModel model = (DefaultTableModel) jTable_Display_User.getModel();
+           model.setRowCount(0);
+           show_user();
+           
+         }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+         }
+    }//GEN-LAST:event_updateActionPerformed
+
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -349,5 +408,6 @@ public void show_user(){
     private javax.swing.JCheckBox readingRoom;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
