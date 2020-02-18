@@ -80,6 +80,8 @@ public void show_user(){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
+
         jLabel1.setText("Name");
 
         jLabel2.setText("Address");
@@ -116,6 +118,7 @@ public void show_user(){
             }
         });
 
+        jTable_Display_User.setBackground(new java.awt.Color(153, 153, 255));
         jTable_Display_User.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -392,6 +395,10 @@ public void show_user(){
     }//GEN-LAST:event_updateActionPerformed
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+        
+        int opt = JOptionPane.showConfirmDialog(null, "Are You sure to delete? ", "Delete", JOptionPane.YES_NO_OPTION);
+        if(opt == 0){
+        
         try{
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
            String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
@@ -411,7 +418,8 @@ public void show_user(){
            
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
-         }       
+         } 
+        }
     }//GEN-LAST:event_deleteActionPerformed
 
     public static void main(String args[]) {
