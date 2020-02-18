@@ -4,7 +4,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -28,7 +30,7 @@ public ArrayList<User> userList(){
        ResultSet rs = st.executeQuery(query1);
        User user;
        while(rs.next()){
-           user = new User(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("gender"), rs.getString("membership"), rs.getString("genre"));
+           user = new User(rs.getInt("id"), rs.getString("name"), rs.getString("address"), rs.getString("gender"), rs.getString("membership"), rs.getString("genre"), rs.getString("date"));
            usersList.add(user);
        }
        
@@ -41,7 +43,7 @@ public ArrayList<User> userList(){
 public void show_user(){
     ArrayList<User> list = userList();
     DefaultTableModel model = (DefaultTableModel)jTable_Display_User.getModel();
-    Object[] row = new Object[6];
+    Object[] row = new Object[7];
     for(int i=0; i < list.size() ; i++){
         row[0] = list.get(i).getId();
         row[1] = list.get(i).getName();
@@ -49,6 +51,7 @@ public void show_user(){
         row[3] = list.get(i).getGender();
         row[4] = list.get(i).getMembership();
         row[5] = list.get(i).getGenre();
+        row[6] = list.get(i).getDate();
         model.addRow(row);
     }
 }
@@ -77,6 +80,8 @@ public void show_user(){
         jTable_Display_User = new javax.swing.JTable();
         update = new javax.swing.JButton();
         delete = new javax.swing.JButton();
+        date_chooser = new com.toedter.calendar.JDateChooser();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -124,7 +129,7 @@ public void show_user(){
 
             },
             new String [] {
-                "Id", "Name", "Address", "Gender", "Membership", "Genre"
+                "Id", "Name", "Address", "Gender", "Membership", "Genre", "Date"
             }
         ));
         jTable_Display_User.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -148,14 +153,16 @@ public void show_user(){
             }
         });
 
+        jLabel6.setText("Date");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
@@ -176,14 +183,19 @@ public void show_user(){
                             .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(address)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(saveBtn)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(saveBtn)
+                                .addGap(18, 18, 18)
+                                .addComponent(update))
+                            .addComponent(jLabel6))
                         .addGap(18, 18, 18)
-                        .addComponent(update)
-                        .addGap(18, 18, 18)
-                        .addComponent(delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(resetBtn)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(delete)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(resetBtn))
+                            .addComponent(date_chooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(11, 11, 11)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
         );
@@ -214,6 +226,10 @@ public void show_user(){
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(date_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
@@ -222,7 +238,7 @@ public void show_user(){
                     .addComponent(delete))
                 .addGap(29, 29, 29))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 14, Short.MAX_VALUE)
+                .addGap(0, 41, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -246,7 +262,7 @@ public void show_user(){
            String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
            Connection con = DriverManager.getConnection(url);
            
-           String query = "insert into users(name, address, gender, membership, genre)values(?, ?, ?, ?, ?)";
+           String query = "insert into users(name, address, gender, membership, genre, date)values(?, ?, ?, ?, ?, ?)";
            PreparedStatement pst = con.prepareStatement(query);
            
            pst.setString(1, name.getText());
@@ -271,6 +287,10 @@ public void show_user(){
            String pick;
            pick = genre.getSelectedItem().toString();
            pst.setString(5, pick);
+           
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+           String date = sdf.format(date_chooser.getDate());
+           pst.setString(7, date);
            
            pst.executeUpdate();
            JOptionPane.showMessageDialog(null, "Data inserted successfuly!");
@@ -345,6 +365,14 @@ public void show_user(){
                     genre.setSelectedIndex(6);
                     break;
             }
+            try{
+                int srow = jTable_Display_User.getSelectedRow();
+                Date date = new SimpleDateFormat("yyyy-MM-dd").parse((String)model.getValueAt(srow, 6));
+                date_chooser.setDate(date);
+                
+            }catch(Exception e){
+                JOptionPane.showMessageDialog(null, e);
+            }
     }//GEN-LAST:event_jTable_Display_UserMouseClicked
 
     private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
@@ -355,7 +383,7 @@ public void show_user(){
            
            int row = jTable_Display_User.getSelectedRow();
            String value = (jTable_Display_User.getModel().getValueAt(row, 0).toString());
-           String query = "UPDATE users SET name = ?, address = ?, gender = ?, membership = ?, genre = ? where id=" + value;
+           String query = "UPDATE users SET name = ?, address = ?, gender = ?, membership = ?, genre = ?, date = ? where id=" + value;
            
            PreparedStatement pst = con.prepareStatement(query);
            
@@ -381,6 +409,10 @@ public void show_user(){
            String pick;
            pick = genre.getSelectedItem().toString();
            pst.setString(5, pick);
+           
+           SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+           String date = sdf.format(date_chooser.getDate());
+           pst.setString(7, date);
            
            pst.executeUpdate();
            JOptionPane.showMessageDialog(null, "Data updated successfuly!");
@@ -435,6 +467,7 @@ public void show_user(){
     private javax.swing.JTextField address;
     private javax.swing.JCheckBox books;
     private javax.swing.ButtonGroup buttonGroup1;
+    private com.toedter.calendar.JDateChooser date_chooser;
     private javax.swing.JButton delete;
     private javax.swing.JRadioButton female;
     private javax.swing.JComboBox genre;
@@ -443,6 +476,7 @@ public void show_user(){
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_Display_User;
