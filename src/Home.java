@@ -49,7 +49,7 @@ public ArrayList<User> userList(){
 public void show_user(){
     ArrayList<User> list = userList();
     DefaultTableModel model = (DefaultTableModel)jTable_Display_User.getModel();
-    Object[] row = new Object[7];
+    Object[] row = new Object[9];
     for(int i=0; i < list.size() ; i++){
         row[0] = list.get(i).getId();
         row[1] = list.get(i).getName();
@@ -88,6 +88,10 @@ public void show_user(){
         delete = new javax.swing.JButton();
         date_chooser = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
+        searchData = new javax.swing.JTextField();
+        id = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -161,6 +165,16 @@ public void show_user(){
 
         jLabel6.setText("Date");
 
+        searchData.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchDataKeyReleased(evt);
+            }
+        });
+
+        jLabel7.setText("Search");
+
+        jLabel8.setText("Id");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -169,46 +183,61 @@ public void show_user(){
                 .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(saveBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(update)
+                        .addGap(22, 22, 22)
+                        .addComponent(delete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(resetBtn))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(76, 76, 76)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(name)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(male)
-                                    .addComponent(books))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(readingRoom)
-                                    .addComponent(female)))
-                            .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(address)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel8))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(saveBtn)
-                                .addGap(18, 18, 18)
-                                .addComponent(update))
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGap(35, 35, 35)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(date_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(71, 71, 71)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(female)
+                                            .addComponent(readingRoom)))
+                                    .addComponent(books)
+                                    .addComponent(male)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(delete)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(resetBtn))
-                            .addComponent(date_chooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addGap(11, 11, 11)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE))
+                                .addGap(36, 36, 36)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(name, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                    .addComponent(address, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
+                                    .addComponent(searchData)
+                                    .addComponent(id))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 86, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -217,35 +246,30 @@ public void show_user(){
                     .addComponent(jLabel2)
                     .addComponent(address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(male)
                     .addComponent(jLabel3)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(male)
-                        .addComponent(female)))
+                    .addComponent(female))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel4)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(readingRoom)
-                        .addComponent(books)))
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(books)
+                        .addComponent(readingRoom)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(genre, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(date_chooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(date_chooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveBtn)
-                    .addComponent(resetBtn)
                     .addComponent(update)
-                    .addComponent(delete))
-                .addGap(29, 29, 29))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 41, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(delete)
+                    .addComponent(resetBtn)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -296,7 +320,7 @@ public void show_user(){
            
            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
            String date = sdf.format(date_chooser.getDate());
-           pst.setString(7, date);
+           pst.setString(6, date);
            
            pst.executeUpdate();
            JOptionPane.showMessageDialog(null, "Data inserted successfuly!");
@@ -324,10 +348,12 @@ public void show_user(){
         int i = jTable_Display_User.getSelectedRow();
         TableModel model = jTable_Display_User.getModel();
         
+        id.setText(model.getValueAt(i, 0).toString());
+        
         name.setText(model.getValueAt(i, 1).toString());
         address.setText(model.getValueAt(i, 2).toString());
         String sex = model.getValueAt(i, 3).toString();
-            if(sex.equals(male)){
+            if(sex.equals("Male")){
                 male.setSelected(true);
             }else{
                 female.setSelected(true);
@@ -387,8 +413,9 @@ public void show_user(){
            String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
            Connection con = DriverManager.getConnection(url);
            
-           int row = jTable_Display_User.getSelectedRow();
-           String value = (jTable_Display_User.getModel().getValueAt(row, 0).toString());
+           //int row = jTable_Display_User.getSelectedRow();
+           //String value = (jTable_Display_User.getModel().getValueAt(row, 0).toString());
+           String value = id.getText();
            String query = "UPDATE users SET name = ?, address = ?, gender = ?, membership = ?, genre = ?, date = ? where id=" + value;
            
            PreparedStatement pst = con.prepareStatement(query);
@@ -460,6 +487,80 @@ public void show_user(){
         }
     }//GEN-LAST:event_deleteActionPerformed
 
+    private void searchDataKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchDataKeyReleased
+        try{
+           Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+           String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
+           Connection con = DriverManager.getConnection(url);
+           
+           String sql = "Select * from users where id = ?";
+           PreparedStatement pst = con.prepareStatement(sql);
+           pst.setString(1, searchData.getText());
+           ResultSet rs = pst.executeQuery();
+           if(rs.next()){
+               String setId = rs.getString("id");
+               id.setText(setId);
+               
+               String setName = rs.getString("name");
+               name.setText(setName);
+               
+               String setAddress = rs.getString("address");
+               address.setText(setAddress);
+               
+               String sex = rs.getString("gender");
+               if(sex.equals("Male")){
+                    male.setSelected(true);
+               }else{
+                    female.setSelected(true);
+                }
+                
+               String membership = rs.getString("membership");
+               switch(membership){
+                case "Books ":
+                    books.setSelected(true);
+                    readingRoom.setSelected(false);
+                    break;
+                case "Reading Room ":
+                    readingRoom.setSelected(true);
+                    books.setSelected(false);
+                    break;
+                default:
+                    books.setSelected(true);
+                    readingRoom.setSelected(true);
+                    break;
+                 }
+               
+               String genre1 = rs.getString("genre");
+               switch(genre1){
+                case "Klasici":
+                    genre.setSelectedIndex(0);
+                    break;
+                case "Akcioni":
+                    genre.setSelectedIndex(1);
+                    break;
+                case "Drame":
+                    genre.setSelectedIndex(2);
+                    break;
+                case "Horor":
+                    genre.setSelectedIndex(3);
+                    break;
+                case "Biografija":
+                    genre.setSelectedIndex(4);
+                    break;
+                case "Ljubavni":
+                    genre.setSelectedIndex(5);
+                    break;
+                case "Ostali":
+                    genre.setSelectedIndex(6);
+                    break;
+                }
+               date_chooser.setDate(rs.getDate("Date"));
+           }
+    }//GEN-LAST:event_searchDataKeyReleased
+ catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+    }
+  }
     public static void main(String args[]) {
        
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -477,12 +578,15 @@ public void show_user(){
     private javax.swing.JButton delete;
     private javax.swing.JRadioButton female;
     private javax.swing.JComboBox genre;
+    private javax.swing.JTextField id;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable_Display_User;
@@ -491,6 +595,7 @@ public void show_user(){
     private javax.swing.JCheckBox readingRoom;
     private javax.swing.JButton resetBtn;
     private javax.swing.JButton saveBtn;
+    private javax.swing.JTextField searchData;
     private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }
