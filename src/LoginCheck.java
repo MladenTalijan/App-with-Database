@@ -26,12 +26,27 @@ public class LoginCheck extends javax.swing.JFrame {
         password = new javax.swing.JPasswordField();
         signIn = new javax.swing.JButton();
         reset = new javax.swing.JButton();
+        lbl_username = new javax.swing.JLabel();
+        lbl_password = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 51, 51));
 
         jLabel1.setText("Username");
 
         jLabel2.setText("Password");
+
+        username.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                usernameKeyReleased(evt);
+            }
+        });
+
+        password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordKeyReleased(evt);
+            }
+        });
 
         signIn.setText("Sign In");
         signIn.addActionListener(new java.awt.event.ActionListener() {
@@ -59,11 +74,14 @@ public class LoginCheck extends javax.swing.JFrame {
                     .addComponent(signIn))
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                    .addComponent(password)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(23, 23, 23)
-                        .addComponent(reset)))
+                    .addComponent(lbl_password, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbl_username, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                        .addComponent(password)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(23, 23, 23)
+                            .addComponent(reset))))
                 .addContainerGap(110, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -73,11 +91,15 @@ public class LoginCheck extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_username, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
+                .addGap(12, 12, 12)
+                .addComponent(lbl_password, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(signIn)
                     .addComponent(reset))
@@ -88,7 +110,17 @@ public class LoginCheck extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void signInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_signInActionPerformed
-       try{
+       
+        if(username.getText().trim().isEmpty()&& password.getText().trim().isEmpty()){
+            lbl_username.setText("Username is empty");
+            lbl_password.setText("Password is epmty");
+        }else if(username.getText().trim().isEmpty()){
+            lbl_username.setText("Username is empty");
+        }else if(password.getText().trim().isEmpty()){
+            lbl_password.setText("Password is epmty");
+    }
+        
+        try{
            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
            String url = "jdbc:sqlserver://localhost:1433;databaseName=testdb;user=sa;password=mladen";
            Connection con = DriverManager.getConnection(url);
@@ -118,6 +150,14 @@ public class LoginCheck extends javax.swing.JFrame {
         username.setText("");
         password.setText("");
     }//GEN-LAST:event_resetActionPerformed
+
+    private void usernameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_usernameKeyReleased
+        lbl_username.setText("");
+    }//GEN-LAST:event_usernameKeyReleased
+
+    private void passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyReleased
+        lbl_password.setText("");
+    }//GEN-LAST:event_passwordKeyReleased
 
     /**
      * @param args the command line arguments
@@ -157,6 +197,8 @@ public class LoginCheck extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel lbl_password;
+    private javax.swing.JLabel lbl_username;
     private javax.swing.JPasswordField password;
     private javax.swing.JButton reset;
     private javax.swing.JButton signIn;
