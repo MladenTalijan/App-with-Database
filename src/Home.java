@@ -1,4 +1,6 @@
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -16,6 +18,10 @@ public class Home extends javax.swing.JFrame {
     public Home() {
         initComponents();
         show_user();
+        
+         Toolkit toolkit = getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        setLocation(size.width/2 - getWidth()/2, size.height/2 - getHeight()/2);
     }
 public ArrayList<User> userList(){
     ArrayList<User> usersList = new ArrayList<>();
